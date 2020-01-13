@@ -1,0 +1,43 @@
+use sgsm;
+
+create table Users(
+ID bigint(20) auto_increment not null,
+DeviceID varchar(100) not null,
+LastEndDateTime datetime(3) not null,
+IsBuyer tinyint(1) not null,
+Antiques tinyint(1) not null,
+Bicycles tinyint(1) not null,
+Books tinyint(1) not null,
+Clothes tinyint(1) not null,
+ExerciseEquipment tinyint(1) not null,
+Games tinyint(1) not null,
+Jewelry tinyint(1) not null,
+OutdoorFurniture tinyint(1) not null,
+Tools tinyint(1) not null,
+Toys tinyint(1) not null,
+Others varchar(100) not null,
+primary key ( id )
+);
+
+Remove gaps in ID in Users table:
+alter table Users drop column ID;
+alter table Users add column ID bigint(20) auto_increment not null primary key first;
+
+create table Sales(
+ID bigint(20) auto_increment not null,
+DeviceID varchar(100) not null,
+Latitude double not null,
+Longitude double not null,
+Address varchar(200) not null,
+Title varchar(100) not null,
+Description varchar(1000) not null,
+Image1 mediumtext,
+Image2 mediumtext,
+Image3 mediumtext,
+Email varchar(100),
+PhoneNumber varchar(20),
+PostedDateTime datetime(3) not null,
+StartDateTime datetime(3) not null,
+EndDateTime datetime(3) not null,
+primary key ( id )
+);

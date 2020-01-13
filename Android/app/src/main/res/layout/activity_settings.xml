@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#add4ff"
+    tools:context=".MainActivity">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/notificationTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="15dp"
+                android:text="Notification"
+                android:textSize="28dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/notifyNearbySalesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="15dp"
+                android:text="Notify Nearby Sales"
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionTextView" />
+
+            <Switch
+                android:id="@+id/notifyNearbySalesSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:checked="true"
+                app:layout_constraintBottom_toBottomOf="@+id/notifyNearbySalesTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/notifyNearbySalesTextView"
+                tools:checked="true" />
+
+            <TextView
+                android:id="@+id/nearbySalesProximityTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="15dp"
+                android:text="Nearby Sales Proximity"
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/notifyNearbySalesTextView" />
+
+            <SeekBar
+                android:id="@+id/nearbySalesProximitySeekBar"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:max="2"
+                android:progress="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nearbySalesProximityTextView" />
+
+            <TextView
+                android:id="@+id/hundredMeters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100 m"
+                app:layout_constraintStart_toStartOf="@+id/nearbySalesProximitySeekBar"
+                app:layout_constraintTop_toBottomOf="@+id/nearbySalesProximitySeekBar" />
+
+            <TextView
+                android:id="@+id/thousandMeters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1,000 m"
+                app:layout_constraintEnd_toEndOf="@+id/nearbySalesProximitySeekBar"
+                app:layout_constraintStart_toStartOf="@+id/nearbySalesProximitySeekBar"
+                app:layout_constraintTop_toBottomOf="@+id/nearbySalesProximitySeekBar" />
+
+            <TextView
+                android:id="@+id/tenThousandMeters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10,000 m"
+                app:layout_constraintEnd_toEndOf="@+id/nearbySalesProximitySeekBar"
+                app:layout_constraintTop_toBottomOf="@+id/nearbySalesProximitySeekBar" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="93dp"
+                android:layout_height="84dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="This setting notifies you when you stand close to a sale even when the app and the phone are turned off."
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/notificationTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_menuheader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/nav_drawer_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

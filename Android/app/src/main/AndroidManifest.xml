@@ -1,0 +1,65 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.harrycha.simplegaragesalemap">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="com.harrycha.simplegaragesalemap.App"
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+        <service
+            android:name="com.harrycha.simplegaragesalemap.MyBackgroundService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.BuyerSellerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.InterestsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.FirstMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.DateTimeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.PostSaleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.ViewSaleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.MapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.UpdateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.AboutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

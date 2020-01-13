@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parentConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MapActivity">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CCCCCC">
+
+            <EditText
+                android:id="@+id/zipCodeEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Zip Code Search"
+                android:inputType="numberDecimal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/zipCodeCancelButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/cancel"
+                app:layout_constraintBottom_toTopOf="@+id/mapFragment"
+                app:layout_constraintStart_toEndOf="@+id/zipCodeEditText"
+                app:layout_constraintTop_toTopOf="@+id/zipCodeEditText" />
+
+            <fragment
+                android:id="@+id/mapFragment"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="50dp"
+                app:layout_constraintBottom_toBottomOf="@id/zipCodeEditText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/zipCodeEditText" />
+
+            <Button
+                android:id="@+id/saleButton"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="60dp"
+                android:background="@drawable/primary_round_button"
+                android:text="+"
+                android:textColor="#FFFFFF"
+                android:textSize="40sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="93dp"
+                android:layout_height="84dp"
+                app:layout_constraintBottom_toBottomOf="@+id/mapFragment"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rateAskPopUpConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone">
+
+                <View
+                    android:id="@+id/rateAskPopUpBackgroundView"
+                    android:layout_width="320dp"
+                    android:layout_height="170dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/rateAskPopUpTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:text="Just a moment please!\n\nAre you enjoying this app?"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/rateAskPopUpBackgroundView"
+                    app:layout_constraintStart_toStartOf="@+id/rateAskPopUpBackgroundView"
+                    app:layout_constraintTop_toTopOf="@+id/rateAskPopUpBackgroundView" />
+
+                <TextView
+                    android:id="@+id/rateAskPopUpYesTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Yes, I am!"
+                    android:textColor="#00FF00"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rateAskPopUpBackgroundView"
+                    app:layout_constraintEnd_toEndOf="@+id/rateAskPopUpBackgroundView" />
+
+                <TextView
+                    android:id="@+id/rateAskPopUpNoTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Not really."
+                    android:textColor="#FFA500"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rateAskPopUpBackgroundView"
+                    app:layout_constraintStart_toStartOf="@+id/rateAskPopUpBackgroundView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rateYesPopUpConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone">
+
+                <View
+                    android:id="@+id/rateYesPopUpBackgroundView"
+                    android:layout_width="320dp"
+                    android:layout_height="240dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/rateYesPopUpTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="I am super glad to hear that.   :)\n\nWould you mind rating\nthis app on Play Store?"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/rateYesPopUpBackgroundView"
+                    app:layout_constraintStart_toStartOf="@+id/rateYesPopUpBackgroundView"
+                    app:layout_constraintTop_toTopOf="@+id/rateYesPopUpBackgroundView" />
+
+                <TextView
+                    android:id="@+id/rateYesPopUpYesTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:text="Sure, take me there!"
+                    android:textColor="#00FF00"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rateYesPopUpBackgroundView"
+                    app:layout_constraintEnd_toEndOf="@+id/rateYesPopUpBackgroundView"
+                    app:layout_constraintStart_toStartOf="@+id/rateYesPopUpBackgroundView" />
+
+                <TextView
+                    android:id="@+id/rateYesPopUpNoTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="No, don't ask again."
+                    android:textColor="#FFA500"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rateYesPopUpBackgroundView"
+                    app:layout_constraintEnd_toEndOf="@+id/rateYesPopUpBackgroundView"
+                    app:layout_constraintStart_toStartOf="@+id/rateYesPopUpBackgroundView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rateNoPopUpConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone">
+
+                <View
+                    android:id="@+id/rateNoPopUpBackgroundView"
+                    android:layout_width="320dp"
+                    android:layout_height="270dp"
+                    android:background="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/rateNoPopUpTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.1"
+                    android:text="I am very sorry to hear that.   :(\n\nWould you mind providing\nfeedback so that I can\nimprove this app for you?"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20dp"
+                    app:layout_constraintEnd_toEndOf="@+id/rateNoPopUpBackgroundView"
+                    app:layout_constraintStart_toStartOf="@+id/rateNoPopUpBackgroundView"
+                    app:layout_constraintTop_toTopOf="@+id/rateNoPopUpBackgroundView" />
+
+                <TextView
+                    android:id="@+id/rateNoPopUpYesTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:text="Sure, take me there!"
+                    android:textColor="#00FF00"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rateNoPopUpBackgroundView"
+                    app:layout_constraintEnd_toEndOf="@+id/rateNoPopUpBackgroundView"
+                    app:layout_constraintStart_toStartOf="@+id/rateNoPopUpBackgroundView" />
+
+                <TextView
+                    android:id="@+id/rateNoPopUpNoTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="No, don't ask again."
+                    android:textColor="#FFA500"
+                    android:textSize="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/rateNoPopUpBackgroundView"
+                    app:layout_constraintEnd_toEndOf="@+id/rateNoPopUpBackgroundView"
+                    app:layout_constraintStart_toStartOf="@+id/rateNoPopUpBackgroundView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_menuheader"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:menu="@menu/nav_drawer_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
