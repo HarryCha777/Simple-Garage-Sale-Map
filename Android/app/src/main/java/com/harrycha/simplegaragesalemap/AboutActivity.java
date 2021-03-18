@@ -35,7 +35,8 @@ public class AboutActivity extends AppCompatActivity {
                 "This app is designed for its new sellers to be able to quickly and effortlessly post their garage sales.\n\n" +
                 "The buyers can also look for garage sales around the world by navigating through the world map.\n\n" +
                 "By automatically notifying the users of nearby garage sales, the app helps the buyers locate garage sales close to them.\n\n" +
-                "For any questions or suggestions, please don’t hesitate to reach out to the developer at simplegaragesalemap@gmail.com.\n\n" +
+                "This app also accumulates sales from EstateSales.org.\n\n" +
+                "For any questions or suggestions, please don’t hesitate to reach out to the developer at sgsmapp@gmail.com.\n\n" +
                 "App version: " + version;
         contentTextView.setText(content);
     }

@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ViewSaleActivity extends AppCompatActivity {
@@ -50,9 +51,23 @@ public class ViewSaleActivity extends AppCompatActivity {
         if (App.viewSaleDisplayValues.get(4).length() == 0) images[1].setVisibility(View.GONE);
         if (App.viewSaleDisplayValues.get(5).length() == 0) images[2].setVisibility(View.GONE);
 
-        if (!App.viewSaleDeviceID.equals(App.myDeviceID)) {
+        ArrayList<String> markerInfo = (ArrayList<String>) App.viewSaleMarker.getTag();
+        String viewSaleDeviceID = markerInfo.get(0);
+
+        if (!viewSaleDeviceID.equals(App.myDeviceID)) {
             editButton.setVisibility(View.GONE);
             deleteButton.setVisibility(View.GONE);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            final int finalI = i;
+            images[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    App.viewImageDrawable = images[finalI].getDrawable();
+                    startActivity(new Intent(getApplicationContext(), ViewImageActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                }
+            });
         }
 
         editButton.setOnClickListener(new View.OnClickListener() {

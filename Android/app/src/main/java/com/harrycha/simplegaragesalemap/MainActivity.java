@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         final Intent startServiceIntent = new Intent(MainActivity.this, MyBackgroundService.class);
         startService(startServiceIntent);
 
-        App.notifyNearbySales = ((App) getApplication()).prefs.getBoolean("Notify Nearby Sales", true);
-        App.nearbySalesProximity = ((App) getApplication()).prefs.getInt("Nearby Sales Proximity", 10000);
+        App.notifyNearbySales = ((App) getApplication()).prefs.getBoolean("Notify Nearby Sales", false);
+        App.nearbySalesProximity = ((App) getApplication()).prefs.getInt("Nearby Sales Proximity", 20000);
         long launchCount = ((App) getApplication()).prefs.getLong("Launch Count", 0); // 2nd value is default value
 
         if (launchCount == 0) {

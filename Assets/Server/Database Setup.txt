@@ -39,5 +39,6 @@ PhoneNumber varchar(20),
 PostedDateTime datetime(3) not null,
 StartDateTime datetime(3) not null,
 EndDateTime datetime(3) not null,
+Source varchar(100) not null,
 primary key ( id )
 );

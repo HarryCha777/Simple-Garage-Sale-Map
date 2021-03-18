@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -33,6 +33,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -62,10 +63,10 @@ public class App extends Application {
     public static int startMin, endMin, beforeChangeStartMin, beforeChangeEndMin, currStartMin, currEndMin;
 
     public static List<String> viewSaleDisplayValues;
-    public static String viewSaleDeviceID;
-    public static String viewSalePostedDateTime;
     public static Marker viewSaleMarker;
     public static boolean isEditing;
+    public static String viewWebLink;
+    public static Drawable viewImageDrawable;
 
     public SharedPreferences prefs;
     public SharedPreferences.Editor editor;
@@ -137,11 +138,26 @@ public class App extends Application {
         return packageName.equals(getApplicationContext().getPackageName());
     }
 
+    public static double getDistance(double lat1, double lat2, double lon1, double lon2) {
+        final int R = 6371; // Radius of the earth
+
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        double distance = R * c * 1000; // convert to meters
+        distance = Math.pow(distance, 2);
+        return Math.sqrt(distance);
+    }
+
     // web server methods
     RequestQueue requestQueue;
 
     void checkNewUser() {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/IsNewUser.php";
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/IsNewUser.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -170,7 +186,7 @@ public class App extends Application {
     }
 
     void addUser() {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/AddUser.php";
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/AddUser.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -196,7 +212,7 @@ public class App extends Application {
 
     void updateInterests(boolean antiques, boolean bicycles, boolean books, boolean clothes, boolean exerciseEquipment, boolean games,
                          boolean jewelry, boolean outdoorFurniture, boolean tools, boolean toys, String others) {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/UpdateInterests.php";
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/UpdateInterests.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -238,7 +254,7 @@ public class App extends Application {
     }
 
     void checkVersionCode(Activity activity) {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/GetMinimumVersionCode.php";
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/GetMinimumVersionCode.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -273,7 +289,7 @@ public class App extends Application {
     }
 
     void checkSale(ConstraintLayout parentConstraintLayout, ProgressBar progressBar) {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/GetLastEndDateTime.php";
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/GetLastEndDateTime.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -306,13 +322,13 @@ public class App extends Application {
     public void addSale(String address, String title, String description,
                         String image1, String image2, String image3,
                         String email, String phoneNumber, String postedDateTime, String startDateTime, String endDateTime) {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/AddSale.php";
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/AddSale.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 salesHelper.add(myDeviceID, myLatitude, myLongitude, postedDateTime, endDateTime, title, address);
-                new MapActivity().showSale(myDeviceID, myLatitude, myLongitude, postedDateTime, endDateTime, title, address);
+                new MapActivity().showSale(myDeviceID, myLatitude, myLongitude, postedDateTime, title, address);
 
                 Toast.makeText(getApplicationContext(), "The sale has been added!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), MapActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -349,7 +365,10 @@ public class App extends Application {
     public void editSale(String title, String description,
                          String image1, String image2, String image3,
                          String email, String phoneNumber, String startDateTime, String endDateTime) {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/EditSale.php";
+        ArrayList<String> markerInfo = (ArrayList<String>) viewSaleMarker.getTag();
+        String viewSalePostedDateTime = markerInfo.get(1);
+
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/EditSale.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -388,7 +407,10 @@ public class App extends Application {
     }
 
     public void deleteSale() {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/DeleteSale.php";
+        ArrayList<String> markerInfo = (ArrayList<String>) viewSaleMarker.getTag();
+        String viewSalePostedDateTime = markerInfo.get(1);
+
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/DeleteSale.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -416,23 +438,35 @@ public class App extends Application {
         requestQueue.add(stringRequest);
     }
 
-    public void viewSale(final String postedDateTime, ConstraintLayout parentConstraintLayout, ProgressBar progressBar) {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/GetSale.php";
+    public void viewSale(ConstraintLayout parentConstraintLayout, ProgressBar progressBar) {
+        ArrayList<String> markerInfo = (ArrayList<String>) viewSaleMarker.getTag();
+        String viewSalePostedDateTime = markerInfo.get(1);
+
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/GetSale.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 List<String> saleColumnList = Arrays.asList(response.split("MARK END COL"));
 
+                // response: "[Link to sale web page]"
+
+                if (saleColumnList.size() == 1) {
+                    viewWebLink = response;
+                    startActivity(new Intent(getApplicationContext(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    return;
+                }
+
                 // response: "[Address]MARK END COL[Title]MARK END COL[Description]MARK END COL[Image1]MARK END COL[Image2]MARK END COL[Image3]MARK END COL[Email]MARK END COL[PhoneNumber]MARK END COL[StartDateTime]MARK END COL[EndDateTime]"
                 // date times, titles, descriptions, images, and emails may have spaces, so "MARK END COL" is used to separate these columns.
                 // users are NOT allowed to contain "MARK END COL" in their titles, descriptions, and emails!
 
                 if (saleColumnList.size() != 10) {
-                    Toast.makeText(getApplicationContext(), "This sale is already deleted.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Error: Please try again.", Toast.LENGTH_LONG).show();
                     enableDisableViewGroup(parentConstraintLayout, true);
                     progressBar.setVisibility(View.GONE);
                     viewSaleMarker.remove();
+                    updateSales();
                     return;
                 }
 
@@ -448,7 +482,7 @@ public class App extends Application {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("PostedDateTime", postedDateTime);
+                params.put("PostedDateTime", viewSalePostedDateTime);
                 return params;
             }
         };
@@ -456,7 +490,7 @@ public class App extends Application {
     }
 
     public void updateSales() {
-        String url = "http://ec2-13-59-86-74.us-east-2.compute.amazonaws.com/GetAllSales.php";
+        String url = "http://ec2-34-220-72-130.us-west-2.compute.amazonaws.com/GetAllSales.php";
         if (requestQueue == null) requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -476,7 +510,11 @@ public class App extends Application {
 
                     if (saleColumnList.size() != 7) continue;
 
-                    salesHelper.add(saleColumnList.get(0), Double.parseDouble(saleColumnList.get(1)), Double.parseDouble(saleColumnList.get(2)),
+                    double latitude = Double.parseDouble(saleColumnList.get(1));
+                    double longitude = Double.parseDouble(saleColumnList.get(2));
+                    if (getDistance(myLatitude, latitude, myLongitude, longitude) > 250000) continue;
+
+                    salesHelper.add(saleColumnList.get(0), latitude, longitude,
                             saleColumnList.get(3), saleColumnList.get(4), saleColumnList.get(5), saleColumnList.get(6));
                 }
                 areSalesUpdated = true;

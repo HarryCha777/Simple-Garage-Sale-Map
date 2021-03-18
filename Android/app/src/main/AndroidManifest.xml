@@ -45,7 +45,13 @@
             android:name="com.harrycha.simplegaragesalemap.ViewSaleActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.harrycha.simplegaragesalemap.ViewImageActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.harrycha.simplegaragesalemap.MapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.harrycha.simplegaragesalemap.WebActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.harrycha.simplegaragesalemap.UpdateActivity"

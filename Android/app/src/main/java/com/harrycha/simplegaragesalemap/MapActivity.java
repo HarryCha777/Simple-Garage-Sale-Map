@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -91,7 +90,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         App.myLatitude = ((App) getApplication()).prefs.getFloat("Last Latitude", 0);
         App.myLongitude = ((App) getApplication()).prefs.getFloat("Last Longitude", 0);
-        App.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(App.myLatitude, App.myLongitude), 15.0f));
+        App.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(App.myLatitude, App.myLongitude), 10.0f));
 
         App.areSalesUpdated = true;
         Runnable r = new Runnable() {
@@ -122,7 +121,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     List<Address> addresses = geocoder.getFromLocationName(zip, 1);
                     if (addresses != null && !addresses.isEmpty()) {
                         Address address = addresses.get(0);
-                        App.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 15.0f));
+                        App.mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 10.0f));
                     } else {
                         Toast.makeText(getApplicationContext(), "No such zip code found.", Toast.LENGTH_SHORT).show();
                     }
@@ -177,18 +176,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return info;
             }
         });
-
         App.mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 App.enableDisableViewGroup(parentConstraintLayout, false);
                 progressBar.setVisibility(View.VISIBLE);
 
-                ArrayList<String> markerInfo = (ArrayList<String>) marker.getTag();
-                App.viewSaleDeviceID = markerInfo.get(0);
-                App.viewSalePostedDateTime = markerInfo.get(3);
                 App.viewSaleMarker = marker;
-                ((App) getApplication()).viewSale(App.viewSalePostedDateTime, parentConstraintLayout, progressBar);
+                ((App) getApplication()).viewSale(parentConstraintLayout, progressBar);
             }
         });
     }
@@ -221,6 +216,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         App.mMap = googleMap;
         App.mMap.setMyLocationEnabled(true);
+        App.mMap.getUiSettings().setZoomControlsEnabled(true);
     }
 
     // navigation drawer menu
@@ -247,8 +243,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         break;
                     case R.id.privacy_policy:
                         String url = "https://simplegaragesalemap.pythonanywhere.com";
-                        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
-                        startActivity(intent);
+                        App.viewWebLink = url;
+                        startActivity(new Intent(getApplicationContext(), WebActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         break;
                     case R.id.about:
                         startActivity(new Intent(getApplicationContext(), AboutActivity.class));
@@ -416,7 +412,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     String address = data.getString(7);
 
                     if (currDateTime.before(Timestamp.valueOf(endDateTime))) { // if sale is not over yet
-                        showSale(deviceID, latitude, longitude, postDateTime, endDateTime, title, address);
+                        showSale(deviceID, latitude, longitude, postDateTime, title, address);
                     }
                 }
             }
@@ -425,23 +421,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void showSale(final String deviceID, double latitude, double longitude,
-                         String postedDateTime, String endDateTime, String title, String address) {
+                         String postedDateTime, String title, String address) {
         MarkerOptions marker = new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
                 .title(title)
                 .snippet(address)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        if (deviceID.equals(App.myDeviceID)) {
-            marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-        }
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+        if (deviceID.length() == 0) marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        if (deviceID.equals(App.myDeviceID)) marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
 
         Marker addedMarker = App.mMap.addMarker(marker);
         ArrayList<String> markerInfo = new ArrayList<String>();
         markerInfo.add(deviceID); // 0
-        markerInfo.add(Double.toString(latitude)); // 1
-        markerInfo.add(Double.toString(longitude)); // 2
-        markerInfo.add(postedDateTime); // 3
-        markerInfo.add(endDateTime); // 4
+        markerInfo.add(postedDateTime); // 1
         addedMarker.setTag(markerInfo);
     }
 

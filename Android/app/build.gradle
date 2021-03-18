@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.harrycha.simplegaragesalemap"
         minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 4
-        versionName "1.0"
+        targetSdkVersion 29
+        versionCode 8
+        versionName "1.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

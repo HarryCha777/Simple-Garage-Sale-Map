@@ -16,17 +16,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Locale;
 
 public class MyBackgroundService extends Service implements LocationListener {
     LocationManager locationManager;
 
-    static final String CHANNEL_ID = "appChannel";
-    static Notification notification;
     boolean foregroundNotificationTurnedOn;
 
     @Override
@@ -38,6 +38,8 @@ public class MyBackgroundService extends Service implements LocationListener {
     }
 
     void turnOnForegroundNotification() {
+        final String CHANNEL_ID = "appChannel";
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,
@@ -49,13 +51,13 @@ public class MyBackgroundService extends Service implements LocationListener {
             manager.createNotificationChannel(serviceChannel);
         }
 
-        notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+        Notification foregroundNotification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.logo)
                 .setContentTitle("Ready to notify you of nearby sales.")
                 .setContentText("This option can be disabled in the settings.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .build();
-        startForeground(1, notification);
+        startForeground(1, foregroundNotification);
     }
 
     @Override
@@ -120,28 +122,12 @@ public class MyBackgroundService extends Service implements LocationListener {
             if (!App.myDeviceID.equals(deviceID)
                     && !App.notifiedSalesHelper.isNotified(postedDateTime)
                     && currDateTime.before(Timestamp.valueOf(endDateTime)) // if sale is not over yet
-                    && getDistance(App.myLatitude, latitude, App.myLongitude, longitude) < App.nearbySalesProximity) {
+                    && App.getDistance(App.myLatitude, latitude, App.myLongitude, longitude) < App.nearbySalesProximity) {
                 showNotification("A sale is found near you!", title);
                 App.notifiedSalesHelper.add(postedDateTime);
             }
         }
     }
-
-    double getDistance(double lat1, double lat2, double lon1, double lon2) {
-        final int R = 6371; // Radius of the earth
-
-        double latDistance = Math.toRadians(lat2 - lat1);
-        double lonDistance = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        double distance = R * c * 1000; // convert to meters
-        distance = Math.pow(distance, 2);
-        return Math.sqrt(distance);
-    }
-
 
     private void showNotification(String title, String content) {
         NotificationManager mNotificationManager;
@@ -166,7 +152,8 @@ public class MyBackgroundService extends Service implements LocationListener {
             manager.createNotificationChannel(serviceChannel);
         }
 
-        mNotificationManager.notify(0, mBuilder.build());
+        int uniqueNumber = (int) ((new Date().getTime() / 1000L) % Integer.MAX_VALUE); // unique number allows multiple notifications
+        mNotificationManager.notify(uniqueNumber, mBuilder.build());
     }
 
     Handler getLocationHandler = new Handler();

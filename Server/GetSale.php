@@ -4,6 +4,18 @@
 
   $postedDateTime = $_POST["PostedDateTime"];
 
+  $query = "select Description, Source from Sales where PostedDateTime = ? limit 1;";
+  $stmt = $conn->prepare($query);
+  $stmt->bind_param("s", $postedDateTime);
+  $stmt->execute();
+  $result = $stmt->get_result() or die("Error: " .mysql_error());
+
+  $row = mysqli_fetch_row($result);
+	if ($row[1] === "estatesales.org") {
+		echo $row[0];
+		exit;
+	}
+
   $query = "select Address, Title, Description, Image1, Image2, Image3, Email, PhoneNumber, StartDateTime, EndDateTime from Sales where PostedDateTime = ? limit 1;";
   $stmt = $conn->prepare($query);
   $stmt->bind_param("s", $postedDateTime);

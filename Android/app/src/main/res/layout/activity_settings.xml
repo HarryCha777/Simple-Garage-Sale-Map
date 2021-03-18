@@ -34,6 +34,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="This setting notifies you when you stand close to a sale even when the app and the phone are turned off."
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/notificationTextView" />
+
+            <TextView
                 android:id="@+id/notifyNearbySalesTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,40 +82,54 @@
 
             <SeekBar
                 android:id="@+id/nearbySalesProximitySeekBar"
-                style="@style/Widget.AppCompat.SeekBar.Discrete"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:max="2"
-                android:progress="2"
+                android:max="99"
+                android:progress="19"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nearbySalesProximityTextView" />
 
             <TextView
-                android:id="@+id/hundredMeters"
+                android:id="@+id/currentProximityTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100 m"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:text="20 km"
+                app:layout_constraintBottom_toBottomOf="@+id/nearbySalesProximityTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/nearbySalesProximityTextView" />
+
+            <TextView
+                android:id="@+id/aKilometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 km\n≈ 0.6 mi"
                 app:layout_constraintStart_toStartOf="@+id/nearbySalesProximitySeekBar"
                 app:layout_constraintTop_toBottomOf="@+id/nearbySalesProximitySeekBar" />
 
             <TextView
-                android:id="@+id/thousandMeters"
+                android:id="@+id/hundredKilometers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1,000 m"
+                android:text="100 km\n≈ 62 mi"
                 app:layout_constraintEnd_toEndOf="@+id/nearbySalesProximitySeekBar"
-                app:layout_constraintStart_toStartOf="@+id/nearbySalesProximitySeekBar"
                 app:layout_constraintTop_toBottomOf="@+id/nearbySalesProximitySeekBar" />
 
-            <TextView
-                android:id="@+id/tenThousandMeters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10,000 m"
-                app:layout_constraintEnd_toEndOf="@+id/nearbySalesProximitySeekBar"
-                app:layout_constraintTop_toBottomOf="@+id/nearbySalesProximitySeekBar" />
+            <fragment
+                android:id="@+id/settingsMapFragment"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="330dp"
+                android:layout_height="200dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/aKilometer" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -115,17 +140,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/descriptionTextView"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:text="This setting notifies you when you stand close to a sale even when the app and the phone are turned off."
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/notificationTextView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
